@@ -41,6 +41,12 @@ public class CubeController : MonoBehaviour
     private void Move(Vector3 direction)
     {
         var verticalComponent = Vector3.down;
+        var isGrounded = CheckIsGrouded();
+        if (!isGrounded)
+        {
+            return;
+        }
+        
         var hasWall = HasWallInteraction(direction);
         if (hasWall)
         {
@@ -57,6 +63,11 @@ public class CubeController : MonoBehaviour
 
         StartCoroutine(Roll(_pivotPoint, _axis));
 
+    }
+
+    private bool CheckIsGrouded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, 0.55f);
     }
 
     private bool HasWallInteraction(Vector3 direction)
@@ -77,8 +88,19 @@ public class CubeController : MonoBehaviour
 
         _rigidbody.isKinematic = false;
         _isMoving = false;
-    }
 
+        SnapPositionToInteger();
+
+    }
+    
+    private void SnapPositionToInteger()
+    {
+        var pos = transform.position;
+        pos.x = Mathf.Round(pos.x);
+        pos.z = Mathf.Round(pos.z);
+        transform.position = pos;
+    }
+    
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
