@@ -3,9 +3,9 @@ using UnityEngine;
 
 namespace DefaultNamespace
 {
-    public class KillPlane : MonoBehaviour
+    public class KillCollider : MonoBehaviour
     {
-        [SerializeField] private string _playerTag;
+        [SerializeField] private string _playerTag = "Player";
         
         // private void OnCollisionEnter(Collision collision)
         // {
@@ -20,9 +20,16 @@ namespace DefaultNamespace
         {
             if (collision.gameObject.CompareTag(_playerTag))
             {
+                //Destroy(collision.gameObject); дестроим игрока, получаем его через коллижн
                 GameStateManager.Instance.Die();
-            
-                Destroy(collision.gameObject); //дестроим игрока, получаем его через коллижн
+            }
+        }
+        
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (collision.gameObject.CompareTag(_playerTag))
+            {
+                GameStateManager.Instance.Die();
             }
         }
     }

@@ -5,8 +5,10 @@ namespace DefaultNamespace
 {
     public class GameStateManager : MonoBehaviour
     {
+        //Singleton pattern
         public static GameStateManager Instance;
         private bool _isDead = false;
+        private GameObject _player;
 
         private void Awake()
         {
@@ -19,9 +21,14 @@ namespace DefaultNamespace
             Instance = this; //обращение к самому себе, экземпляр созданного класс
         }
 
+        private void Start()
+        {
+            _player = FindObjectOfType<PlayerInput>().gameObject;
+        }
+
         public void Die() //экземплярный метод не статический
         {
-            Debug.Log("Player died");
+            Destroy(_player);
             _isDead = true;
         }
     }

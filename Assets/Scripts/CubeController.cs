@@ -3,6 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 public class CubeController : MonoBehaviour
 {
     [SerializeField] private float _rollSpeed = 5f;
@@ -15,39 +16,19 @@ public class CubeController : MonoBehaviour
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
-
-    private void Update()
+    
+    public void Move(Vector3 direction)
     {
         if (_isMoving) return;
         
-        if (Input.GetKey(KeyCode.A))
-        {
-            Move(Vector3.left);
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            Move(Vector3.right);
-        }
-        else if (Input.GetKey(KeyCode.W))
-        {
-            Move(Vector3.forward);
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            Move(Vector3.back);
-        }
-    }
-
-    private void Move(Vector3 direction)
-    {
         var verticalComponent = Vector3.down;
-        var isGrounded = CheckIsGrouded();
+        var isGrounded = BLockChecker.CheckIsGrouded(transform.position);
         if (!isGrounded)
         {
             return;
         }
         
-        var hasWall = HasWallInteraction(direction);
+        var hasWall = BLockChecker.HasWallInDirection(transform.position, direction);
         if (hasWall)
         {
             verticalComponent = Vector3.up;
@@ -65,16 +46,6 @@ public class CubeController : MonoBehaviour
 
     }
 
-    private bool CheckIsGrouded()
-    {
-        return Physics.Raycast(transform.position, Vector3.down, 0.55f);
-    }
-
-    private bool HasWallInteraction(Vector3 direction)
-    {
-        return Physics.Raycast(transform.position, direction, 0.55f);
-    }
-
     private IEnumerator Roll(Vector3 pivot, Vector3 axis)
     {
         _isMoving = true;
@@ -89,18 +60,10 @@ public class CubeController : MonoBehaviour
         _rigidbody.isKinematic = false;
         _isMoving = false;
 
-        SnapPositionToInteger();
+        BLockChecker.SnapPositionToInteger(transform);
 
     }
-    
-    private void SnapPositionToInteger()
-    {
-        var pos = transform.position;
-        pos.x = Mathf.Round(pos.x);
-        pos.z = Mathf.Round(pos.z);
-        transform.position = pos;
-    }
-    
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
