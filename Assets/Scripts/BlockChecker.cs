@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public static class BLockChecker
+public static class BlockChecker
 {
     private const float VectorLength = 0.55f;
     

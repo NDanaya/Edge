@@ -13,7 +13,7 @@ namespace DefaultNamespace
         }
         public Vector3 GetDirection(Vector3 transformPosition)
         {
-            if (BLockChecker.HasBlockInDirection(transformPosition, _direction))
+            if (BlockChecker.HasBlockInDirection(transformPosition, _direction))
             {
                 return _direction;
             }

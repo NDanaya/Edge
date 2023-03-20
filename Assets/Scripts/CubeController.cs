@@ -22,13 +22,13 @@ public class CubeController : MonoBehaviour
         if (_isMoving) return;
         
         var verticalComponent = Vector3.down;
-        var isGrounded = BLockChecker.CheckIsGrouded(transform.position);
+        var isGrounded = BlockChecker.CheckIsGrouded(transform.position);
         if (!isGrounded)
         {
             return;
         }
         
-        var hasWall = BLockChecker.HasWallInDirection(transform.position, direction);
+        var hasWall = BlockChecker.HasWallInDirection(transform.position, direction);
         if (hasWall)
         {
             verticalComponent = Vector3.up;
@@ -60,7 +60,7 @@ public class CubeController : MonoBehaviour
         _rigidbody.isKinematic = false;
         _isMoving = false;
 
-        BLockChecker.SnapPositionToInteger(transform);
+        BlockChecker.SnapPositionToInteger(transform);
 
     }
 
